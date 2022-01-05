@@ -7,10 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-import net.fabricmc.event.EventManager;
 import net.minecraft.client.MinecraftClient;
 import net.fabricmc.command.Command;
-import net.fabricmc.api.Api;
 
 
 
@@ -24,7 +22,7 @@ public enum botClient {
 	
 	
 	private boolean mod_enabled = true;
-	private EventManager eventManager;
+	
 	
 	
 	// init function
@@ -34,9 +32,6 @@ public enum botClient {
 		command.commandInit();
 		
         
-	}
-	public EventManager getManager() {
-		return eventManager;
 	}
 	public boolean isEnabled() {
 		return mod_enabled;

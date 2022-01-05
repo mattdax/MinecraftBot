@@ -34,9 +34,9 @@ def waitForClient():
     conn, addr = s.accept()
     print("Connection Made")
     # Start 2 threads, listener and sender
-    listener = threading.Thread(target = listen, args  = (conn))
+    listener = threading.Thread(target = listen, args  = (conn,))
     listener.start()
-    send = threading.Thread(target = sender, args  = (conn))
+    send = threading.Thread(target = sender, args  = (conn,))
     send.start()
     #_thread.start_new_thread(passwordVerification(),args=(conn,addr))
 

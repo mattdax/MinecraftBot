@@ -12,9 +12,10 @@ public class Api {
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		System.out.println("Python API Connected");
 		String inputLine;
+		
 		while((inputLine = in.readLine())!= null){
 			 if (".".equals(inputLine)) {
-                 out.println("bye");
+                 
                  break;
              }
              System.out.println(inputLine);
@@ -24,5 +25,6 @@ public class Api {
 		in.close();
 		out.close();
 		clientSocket.close();
+		System.out.println("Connection Closed");
 	}
 }

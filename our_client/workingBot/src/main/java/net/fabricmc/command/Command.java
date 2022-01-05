@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import net.fabricmc.api.Api;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.movement.Listener;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.Vec3d;
 
@@ -17,16 +18,20 @@ public class Command {
 		api = new Api();
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             dispatcher.register(literal("startbot").executes(context -> {
-                System.out.println("Bot Started again");
+                System.out.println("Bot Started");
+                
         		//MC.player.jump();
                 
         		try {
 					api.start("192.168.1.11", 30000);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Server Connection Error, check other end.");
+					return 1;
+					//e.printStackTrace();
 				}
-                return 1;
+        		Listener.init();
+        		return 1;
             }));
         });
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
