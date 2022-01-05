@@ -1,11 +1,5 @@
 import socket
-import _thread
-import datetime
-
-#configuring time settings
-now = datetime.datetime.now()
-
-#opening the accounts file so that it can be read
+import threading
 
 logFile=open('connectionLogs.txt','w')
 
@@ -14,8 +8,22 @@ IP = "192.168.1.11"
 port = 30000
 Buffer = 1024
 connection= False
+# In and Out data
+re_commands = []
+send_commands = []
 
-clientErrorMessage=""
+def listen(connection):
+    print("Listener has started.")
+    while True:
+        data = connection.recv(4096)
+        if(data):
+            re_commands.append(data)
+def sender(connection):
+    print("Sender has started")
+    while True:
+        if(len(send_commands) > 0):
+            connection.send(send_commands[0])
+            send_commands.remove(0)
 
 def waitForClient():
     #Beginning search for clients
@@ -24,15 +32,15 @@ def waitForClient():
     s.bind((IP,port))
     s.listen(5)
     conn, addr = s.accept()
-    print("successful Connection")
-    print(conn,addr)
-    conn.send("Poo poo".encode())
-    #logFile.write("["+now.strftime("%Y-%m-%d %H:%M")+"] Connection from",addr)
-    #making a new thread so that the program can keep searching for new connections
+    print("Connection Made")
+    # Start 2 threads, listener and sender
+    listener = threading.Thread(target = listen, args  = (conn))
+    listener.start()
+    send = threading.Thread(target = sender, args  = (conn))
+    send.start()
     #_thread.start_new_thread(passwordVerification(),args=(conn,addr))
 
-#Introduction to threading, still learning about this
-#_thread.start_new_thread(waitForClient())
+
 
 #Runs the program
 waitForClient()
