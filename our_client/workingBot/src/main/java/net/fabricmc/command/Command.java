@@ -23,16 +23,16 @@ public class Command extends Thread {
                 
         		new trackerMatrix();
                 
-                Api api = null;
+                 this.api = null;
 				try {
-					api = new Api("192.168.1.11",30005);
+					this.api = new Api("192.168.1.11",30006);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-        		api.start();
+        		this.api.start();
                
-        		Listener thread_two = new Listener(api);
+        		Listener thread_two = new Listener(this.api);
         		thread_two.start();
         		
         		return 1;
@@ -42,14 +42,15 @@ public class Command extends Thread {
             dispatcher.register(literal("endbot").executes(context -> {
                 System.out.println("Bot Ended");
         		//MC.player.jump();
+    			this.api.stopPythonListener();
+    			System.out.println("Stopped listener");
     			try {
-					api.close();
+					this.api.close();
+					System.out.println("API Closed");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-    			
-    			MC.options.keyForward.setPressed(false);
                 return 1;
             }));
         });

@@ -5,7 +5,7 @@ logFile=open('connectionLogs.txt','w')
 
 #Setup Variables
 IP = "192.168.1.11"
-port = 30005
+port = 30006
 Buffer = 1024
 connection= False
 # In and Out data
@@ -15,12 +15,22 @@ send_commands = []
 def listen(connection):
     print("Listener has started.")
     while True:
+        cur_move = []
+        tmp_val = 0
         data = connection.recv(4096)
-        if not data:
+        print(data.decode("ASCII")[0:2])
+        if data.decode("ASCII")[0:3]=="END":
             print("Listener Stopped")
+            print(re_commands)
             break
-        print(data)
-        re_commands.append(data)
+        # Decodes each movement into the original list element
+        for x in data.decode("ASCII"):
+            try:
+                tmp_val = int(x)
+                cur_move.append(tmp_val)
+            except ValueError:
+                continue
+        re_commands.append(cur_move)
 def sender(connection):
     print("Sender has started")
     while True:

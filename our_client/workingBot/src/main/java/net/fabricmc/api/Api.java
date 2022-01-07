@@ -48,15 +48,17 @@ public class Api extends Thread {
 		}
 	}
 	public void close() throws IOException {
-		in.close();
-		out.close();
-		clientSocket.close();
+		this.in.close();
+		this.out.close();
+		this.clientSocket.close();
 		System.out.println("Connection Closed");
 	}
 	public void sendMovement(int[] movements) {
-		System.out.println(Arrays.toString(movements));
+		
 		this.out.println(Arrays.toString(movements));
-	
+	}
+	public void stopPythonListener() {
+		this.out.println("END");
 	}
 
 }
