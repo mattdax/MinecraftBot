@@ -2,9 +2,10 @@ package net.fabricmc.api;
 
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
 
 import net.fabricmc.movement.Listener;
-public class Api implements Runnable {
+public class Api extends Thread {
 	
 	
 	
@@ -15,36 +16,21 @@ public class Api implements Runnable {
 	
 	private String ip;
 	private int port;
-	public Api(String ip, int port) {
+	public Api(String ip, int port) throws UnknownHostException, IOException {
 		
 		
 		
 		this.ip = ip;
 		this.port = port;
+		this.clientSocket = new Socket(ip,port);
+		this.out = new PrintWriter(clientSocket.getOutputStream(),true);
+		this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		
+		
 	}
 	
 	public void run() {
-		try {
-			clientSocket = new Socket(ip,port);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			out = new PrintWriter(clientSocket.getOutputStream(),true);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		System.out.println("Python API Connected");
 		String inputLine;
 		
@@ -67,6 +53,10 @@ public class Api implements Runnable {
 		clientSocket.close();
 		System.out.println("Connection Closed");
 	}
-
+	public void sendMovement(int[] movements) {
+		System.out.println(Arrays.toString(movements));
+		this.out.println(Arrays.toString(movements));
+	
+	}
 
 }

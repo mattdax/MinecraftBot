@@ -2,12 +2,12 @@ package net.fabricmc.movement;
 
 import net.minecraft.client.MinecraftClient;
 import net.fabricmc.movement.trackerMatrix;
-
+import net.fabricmc.api.Api;
 
 public class basicMovements {
 	public static final MinecraftClient MC = MinecraftClient.getInstance();
-	
-	public static void check(int tick) {
+	static int[] currentTick = new int[7];
+	public static int[] check(int tick) {
 		boolean forward = movingForward();
 		boolean backward = movingBackward();
 		boolean jumping = jumping();
@@ -22,6 +22,14 @@ public class basicMovements {
 		trackerMatrix.movementMatrix[tick][4] = right ? 1: 0;
 		trackerMatrix.movementMatrix[tick][5] = leftClick ? 1: 0;
 		trackerMatrix.movementMatrix[tick][6] = rightClick ? 1: 0;
+		currentTick[0] = forward ? 1: 0;
+		currentTick[1] = backward ? 1: 0;
+		currentTick[2] = jumping ? 1: 0;
+		currentTick[3] = left ? 1: 0;
+		currentTick[4] = right ? 1: 0;
+		currentTick[5] = leftClick ? 1: 0;
+		currentTick[6] = rightClick ? 1: 0;
+		return currentTick;
 	}
 	
 	public static boolean movingForward() {

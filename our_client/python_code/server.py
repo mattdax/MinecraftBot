@@ -5,7 +5,7 @@ logFile=open('connectionLogs.txt','w')
 
 #Setup Variables
 IP = "192.168.1.11"
-port = 30004
+port = 30005
 Buffer = 1024
 connection= False
 # In and Out data
@@ -16,9 +16,11 @@ def listen(connection):
     print("Listener has started.")
     while True:
         data = connection.recv(4096)
-        if(data):
-            print(data)
-            re_commands.append(data)
+        if not data:
+            print("Listener Stopped")
+            break
+        print(data)
+        re_commands.append(data)
 def sender(connection):
     print("Sender has started")
     while True:
